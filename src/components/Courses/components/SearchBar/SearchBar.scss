@@ -1,0 +1,11 @@
+.search-bar {
+    display: flex;
+    justify-content: space-between;
+    max-height: 150px;
+    align-items: center;
+
+    button {
+        height: 20px;
+        border: solid 1px rgb(185, 32, 170);
+    }
+}

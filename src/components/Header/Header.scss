@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    max-height: 150px;
+    align-items: center;
+    margin: 0 20px;
+    padding: 10px 20px;
+    border: solid 1px rgb(255, 0, 111);
+
+    img {
+        width: 5%;
+    }
+
+    span {
+        margin-left: auto;
+        margin-right: 20px;
+    }
+
+    button {
+        height: 20px;
+        border: solid 1px rgb(185, 32, 170);
+    }
+}

@@ -1,0 +1,43 @@
+.course-card {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	margin: 20px;
+	padding: 20px;
+	border: solid 1px rgba(8, 171, 8, 0.797);
+
+	&-main {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+		margin-right: 20px;
+	}
+
+	&-desc {
+		display: flex;
+		flex-direction: column;
+		flex: 0 0 230px;
+
+		.subTitle {
+			font-weight: bold;
+		}
+
+		button {
+			min-height: 20px;
+			border: solid 1px rgb(185, 32, 170);
+		}
+	}
+
+	&-authors,
+	&-duration,
+	&-date {
+		margin: 10px 0;
+	}
+	
+	&-actions {
+		display: flex;
+		align-self: center	;
+		margin: 10px 0;
+	}
+
+}

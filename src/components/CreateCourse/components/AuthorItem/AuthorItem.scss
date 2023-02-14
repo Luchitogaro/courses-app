@@ -1,0 +1,10 @@
+.add-author {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    button {
+        height: 20px;
+        border: solid 1px rgb(185, 32, 170);
+    }
+}
