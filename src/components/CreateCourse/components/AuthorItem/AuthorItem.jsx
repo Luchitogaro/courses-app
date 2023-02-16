@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
 import Button from '../../../../common/Button/Button';
+import PropTypes from 'prop-types';
 
 // import styles
 import './AuthorItem.scss';
@@ -16,6 +17,11 @@ const AuthorItem = ({ author, addAuthorEvent }) => {
 			<Button buttonText='Add author' onClick={handleCreateAuthorEvent} />
 		</div>
 	);
+};
+
+AuthorItem.propTypes = {
+	author: PropTypes.object,
+	addAuthorEvent: PropTypes.func,
 };
 
 export default AuthorItem;

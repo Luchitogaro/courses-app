@@ -1,0 +1,15 @@
+.banner-bar {
+    display: flex;
+    flex-direction: row;
+    align-content: space-between;
+    align-items: center;
+    margin: 0 20px;
+    padding: 20px 20px;
+    border: solid 1px rgb(60, 0, 255);
+
+    button {
+        height: 20px;
+        border: solid 1px rgb(185, 32, 170);
+        margin-left: auto;
+    }
+}
