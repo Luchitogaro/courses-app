@@ -1,0 +1,32 @@
+.registration {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 20px;
+	padding: 10%;
+	border: solid 1px rgba(46, 101, 241, 0.826);
+
+	.registration-info {
+		margin-bottom: 20px;
+		width: 50%;
+		flex-direction: column;
+		display: flex;
+
+		input {
+			width: 100%;
+			margin-bottom: 10px;
+		}
+	}
+
+	.registration-actions {
+		display: flex;
+		flex-direction: column;
+
+		button {
+			height: 20px;
+			border: solid 1px rgb(185, 32, 170);
+			margin: 20px 0;
+			align-self: center;
+		}
+	}
+}

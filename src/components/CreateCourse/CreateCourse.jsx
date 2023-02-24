@@ -1,28 +1,31 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { v4 as uuidv4 } from 'uuid';
+import PropTypes from 'prop-types';
 
 // import styles
 import './CreateCourse.scss';
 import { todayDate } from '../../helpers/formatCreationDate';
+import { Context } from '../../Store';
+import { Link, useNavigate } from 'react-router-dom';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
-const CreateCourse = ({
-	createCourseEvent,
-	createAuthorEvent,
-	authorsList,
-}) => {
+const CreateCourse = () => {
+	const navigate = useNavigate();
+
+	const [state, dispatch] = useContext(Context);
+
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [authorName, setAuthorName] = useState('');
 	const [duration, setDuration] = useState(0);
 	const [currentAuthorList, setCurrentAuthorList] = useState([]);
-	const [generalAuthorList, setGeneralAuthorList] = useState(authorsList);
+	const [generalAuthorList, setGeneralAuthorList] = useState(state.authors);
 
 	const addAuthorEvent = (author) => {
 		setCurrentAuthorList([...currentAuthorList, author]);
@@ -79,7 +82,8 @@ const CreateCourse = ({
 				duration: duration,
 				authors: currentAuthorList.map((author) => author.id),
 			};
-			createCourseEvent(newCourse);
+			dispatch({ type: 'ADD_COURSE', payload: newCourse });
+			navigate('/courses');
 		}
 	};
 
@@ -93,7 +97,7 @@ const CreateCourse = ({
 			id: uuidv4(),
 			name: authorName,
 		};
-		createAuthorEvent(newAuthor);
+		dispatch({ type: 'ADD_AUTHOR', payload: newAuthor });
 		setAuthorName('');
 		setGeneralAuthorList([...generalAuthorList, newAuthor]);
 	};
@@ -126,6 +130,11 @@ const CreateCourse = ({
 
 	return (
 		<form className='create-course'>
+			<div className='course-card-back'>
+				<Link to='/courses'>
+					<h3>&#60; Back to courses</h3>
+				</Link>
+			</div>
 			<div className='course-info'>
 				<div className='course-info-title'>
 					<Input
@@ -135,9 +144,9 @@ const CreateCourse = ({
 						id='course-title'
 						value={title}
 						onChange={handleTitleChange}
-						twoLines={true}
+						twoLines
 						minLength='2'
-						required={true}
+						required
 					/>
 					<Button
 						buttonText='Create Course'
@@ -152,9 +161,9 @@ const CreateCourse = ({
 						id='course-description'
 						value={description}
 						onChange={handleDescriptionChange}
-						twoLines={true}
+						twoLines
 						minLength='2'
-						required={true}
+						required
 					/>
 				</div>
 			</div>
@@ -183,10 +192,10 @@ const CreateCourse = ({
 							type='number'
 							placeholder='Enter course duration...'
 							id='course-duration'
-							value={duration}
+							value={duration.toString()}
 							onChange={handleDurationChange}
-							twoLines={true}
-							required={true}
+							twoLines
+							required
 							min='1'
 						/>
 						<span className='duration-value'>
@@ -230,6 +239,12 @@ const CreateCourse = ({
 			</div>
 		</form>
 	);
+};
+
+CreateCourse.propTypes = {
+	createCourseEvent: PropTypes.func,
+	createAuthorEvent: PropTypes.func,
+	authorsList: PropTypes.array,
 };
 
 export default CreateCourse;
