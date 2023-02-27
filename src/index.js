@@ -7,12 +7,13 @@ import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
 import CreateCourse from './components/CreateCourse/CreateCourse';
-import Store from './Store';
 import Layout from './common/Layout/Layout';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-	<Store>
+	<Provider store={store}>
 		<BrowserRouter>
 			<Routes>
 				<Route path='courses'>
@@ -60,5 +61,5 @@ root.render(
 				<Route path='*' element={<Navigate to='login' />} />
 			</Routes>
 		</BrowserRouter>
-	</Store>
+	</Provider>
 );
