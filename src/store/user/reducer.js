@@ -14,7 +14,7 @@ export const userReducer = (state = userInitialState, action) => {
 	switch (action.type) {
 		// Do something here based on the different types of actions
 		case SAVE_USER:
-			return action.payload;
+			return { ...state, ...action.payload, isAuth: true };
 
 		case DELETE_USER:
 			return userInitialState;

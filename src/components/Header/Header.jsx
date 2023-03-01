@@ -5,19 +5,20 @@ import Logo from './components/Logo/Logo';
 
 // import styles
 import './Header.scss';
-import {
-	getUserName,
-	isLogedIn,
-	removeLoginData,
-} from '../../helpers/localStorage';
+import { isLogedIn, removeLoginData } from '../../helpers/localStorage';
 import { useNavigate } from 'react-router';
 import { logoutUser } from '../../services';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteUserAction } from '../../store/user/actions';
 
 const Header = () => {
 	const navigate = useNavigate();
 	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state);
+
+	const getUserName = () => {
+		return user?.name;
+	};
 
 	const handleEvent = async () => {
 		if (isLogedIn) {

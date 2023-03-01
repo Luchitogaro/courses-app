@@ -14,8 +14,7 @@ export const authorsReducer = (state = authorsInitialState, action) => {
 		case ADD_AUTHOR:
 			return [...state, action.payload];
 
-		case DELETE_AUTHOR:
-			// eslint-disable-next-line no-case-declarations
+		case DELETE_AUTHOR: {
 			const index = state.authors.indexOf(
 				(course) => course.id === action.payload
 			);
@@ -23,6 +22,7 @@ export const authorsReducer = (state = authorsInitialState, action) => {
 				...state.authors.slice(0, index),
 				...state.authors.slice(index + 1),
 			];
+		}
 
 		default:
 			// If this reducer doesn't recognize the action type, or doesn't

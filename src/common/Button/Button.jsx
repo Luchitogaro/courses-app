@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const Button = ({ children, buttonText, onClick, value }) => (
 	<button value={value} onClick={onClick}>
-		{children ? children : buttonText}
+		{children ?? buttonText}
 	</button>
 );
 Button.propTypes = {

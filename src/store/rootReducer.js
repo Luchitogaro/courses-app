@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { combineReducers } from '@reduxjs/toolkit';
 import { authorsReducer } from './authors/reducer.js';
 import { coursesReducer } from './courses/reducer.js';
 import { userReducer } from './user/reducer.js';
@@ -8,5 +8,3 @@ export const rootReducer = combineReducers({
 	authors: authorsReducer,
 	user: userReducer,
 });
-
-export const store = configureStore({ reducer: rootReducer });

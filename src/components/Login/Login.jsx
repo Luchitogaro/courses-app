@@ -4,7 +4,6 @@ import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { loginUser } from '../../services';
 
-// import styles
 import './Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { setLoginData } from '../../helpers/localStorage';
@@ -29,7 +28,6 @@ const Login = () => {
 				setLoginData(token, name);
 				dispatch(
 					saveUsersAction({
-						isAuth: true,
 						name,
 						email: response.user.email,
 						token,
