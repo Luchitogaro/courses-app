@@ -9,7 +9,7 @@ export const authorsReducer = (state = authorsInitialState, action) => {
 	switch (action.type) {
 		// Do something here based on the different types of actions
 		case SAVE_AUTHORS:
-			return action.payload;
+			return [...state, action.payload];
 
 		case ADD_AUTHOR:
 			return [...state, action.payload];
