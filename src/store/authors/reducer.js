@@ -1,7 +1,6 @@
-import { mockedAuthorsList } from '../../constants';
 import { ADD_AUTHOR, DELETE_AUTHOR, SAVE_AUTHORS } from './types';
 
-export const authorsInitialState = [...mockedAuthorsList];
+export const authorsInitialState = [];
 
 // Use the initialState as a default value
 export const authorsReducer = (state = authorsInitialState, action) => {
@@ -9,7 +8,7 @@ export const authorsReducer = (state = authorsInitialState, action) => {
 	switch (action.type) {
 		// Do something here based on the different types of actions
 		case SAVE_AUTHORS:
-			return [...state, action.payload];
+			return [...state, ...action.payload];
 
 		case ADD_AUTHOR:
 			return [...state, action.payload];

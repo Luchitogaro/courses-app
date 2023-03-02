@@ -6,7 +6,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import Registration from './components/Registration/Registration';
 import Login from './components/Login/Login';
 import CourseInfo from './components/CourseInfo/CourseInfo';
-import CreateCourse from './components/CreateCourse/CreateCourse';
+import CourseForm from './components/CourseForm/CourseForm';
 import Layout from './common/Layout/Layout';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -37,7 +37,7 @@ root.render(
 						path='add'
 						element={
 							<Layout>
-								<CreateCourse />
+								<CourseForm />
 							</Layout>
 						}
 					/>

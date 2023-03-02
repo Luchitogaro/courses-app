@@ -8,7 +8,7 @@ import { v4 as uuidv4 } from 'uuid';
 import PropTypes from 'prop-types';
 
 // import styles
-import './CreateCourse.scss';
+import './CourseForm.scss';
 import { todayDate } from '../../helpers/formatCreationDate';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,7 +17,7 @@ import { addAuthorAction } from '../../store/authors/actions';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
-const CreateCourse = () => {
+const CourseForm = () => {
 	const navigate = useNavigate();
 
 	const dispatch = useDispatch();
@@ -74,7 +74,7 @@ const CreateCourse = () => {
 		return true;
 	};
 
-	const handleCreateCourseEvent = (e) => {
+	const handleCourseFormEvent = (e) => {
 		e.preventDefault();
 		if (isValidForm()) {
 			const newCourse = {
@@ -151,10 +151,7 @@ const CreateCourse = () => {
 						minLength='2'
 						required
 					/>
-					<Button
-						buttonText='Create Course'
-						onClick={handleCreateCourseEvent}
-					/>
+					<Button buttonText='Create Course' onClick={handleCourseFormEvent} />
 				</div>
 				<div className='course-info-desc'>
 					<Input
@@ -244,10 +241,10 @@ const CreateCourse = () => {
 	);
 };
 
-CreateCourse.propTypes = {
-	createCourseEvent: PropTypes.func,
+CourseForm.propTypes = {
+	CourseFormEvent: PropTypes.func,
 	createAuthorEvent: PropTypes.func,
 	authorsList: PropTypes.array,
 };
 
-export default CreateCourse;
+export default CourseForm;

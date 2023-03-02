@@ -2,24 +2,24 @@ import { getToken } from './helpers/localStorage';
 
 export const HOST = 'http://localhost:4000';
 
-export const getCourses = async () => {
-	const response = await fetch(`${HOST}/courses/all`, {
+export const getCourses = () => {
+	const response = fetch(`${HOST}/courses/all`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
-	return response.json();
+	return response.then((response) => response.json());
 };
 
-export const getAuthors = async () => {
-	const response = await fetch(`${HOST}/authors/all`, {
+export const getAuthors = () => {
+	const response = fetch(`${HOST}/authors/all`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
 		},
 	});
-	return response.json();
+	return response.then((response) => response.json());
 };
 
 export const loginUser = async (logUser) => {

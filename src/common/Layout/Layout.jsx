@@ -4,10 +4,9 @@ import { useLocation, useNavigate } from 'react-router';
 import Header from '../../components/Header/Header';
 import { isLogedIn } from '../../helpers/localStorage';
 import PropTypes from 'prop-types';
-import { getCourses, getAuthors } from '../../services';
 import { useDispatch } from 'react-redux';
-import { saveCoursesAction } from '../../store/courses/actions';
-import { saveAuthorsAction } from '../../store/authors/actions';
+import { getAllCourses } from '../../store/courses/thunk';
+import { getAllAuthors } from '../../store/authors/thunk';
 
 function Layout({ children }) {
 	const location = useLocation();
@@ -28,12 +27,8 @@ function Layout({ children }) {
 		) {
 			navigate('/courses');
 		}
-		getCourses().then((response) => {
-			dispatch(saveCoursesAction([...response.result]));
-		});
-		getAuthors().then((response) => {
-			dispatch(saveAuthorsAction([...response.result]));
-		});
+		dispatch(getAllCourses());
+		dispatch(getAllAuthors());
 	}, []);
 
 	return (

@@ -13,7 +13,7 @@ const Courses = () => {
 
 	const navigate = useNavigate();
 
-	const createCourseEventCourse = () => {
+	const CourseFormEventCourse = () => {
 		navigate('/courses/add');
 	};
 
@@ -21,7 +21,7 @@ const Courses = () => {
 		<>
 			<div className='banner-bar'>
 				<SearchBar />
-				<Button buttonText='Create course' onClick={createCourseEventCourse} />
+				<Button buttonText='Create course' onClick={CourseFormEventCourse} />
 			</div>
 			<div className='courses'>
 				{courses.map((course, index) => {

@@ -8,7 +8,7 @@ export const coursesReducer = (state = coursesInitialState, action) => {
 	switch (action.type) {
 		// Do something here based on the different types of actions
 		case SAVE_COURSES:
-			return [...state, action.payload];
+			return [...state, ...action.payload];
 
 		case ADD_COURSE:
 			return [...state, action.payload];
