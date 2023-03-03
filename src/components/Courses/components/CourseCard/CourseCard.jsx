@@ -5,12 +5,16 @@ import { formatDate } from '../../../../helpers/formatCreationDate';
 import { getCourseDuration } from '../../../../helpers/getCourseDuration';
 import PropTypes from 'prop-types';
 
-// import styles
-import './CourseCard.scss';
 import { useNavigate } from 'react-router';
 import { Link } from 'react-router-dom';
+import { deleteCourseAction } from '../../../../store/courses/actions';
+import { useDispatch } from 'react-redux';
+import { FaEdit, FaTrash } from 'react-icons/fa';
 
-const getAuthorlist = (authorList) => authorList.join(',');
+// import styles
+import './CourseCard.scss';
+
+const getAuthorlist = (authorList) => authorList.join(', ');
 
 const CourseCard = ({
 	id,
@@ -23,9 +27,17 @@ const CourseCard = ({
 	backButton,
 }) => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleEvent = () => {
 		navigate('/courses/' + id);
+	};
+	const handleEventEdit = () => {
+		alert('Edit button clicked ' + id);
+	};
+	const handleEventRemove = () => {
+		dispatch(deleteCourseAction(id));
+		navigate('/courses');
 	};
 
 	return (
@@ -61,6 +73,12 @@ const CourseCard = ({
 				{showMoreButton && (
 					<div className='course-card-actions'>
 						<Button buttonText='Show course' onClick={handleEvent}></Button>
+						<Button onClick={handleEventEdit}>
+							<FaEdit />
+						</Button>
+						<Button onClick={handleEventRemove}>
+							<FaTrash />
+						</Button>
 					</div>
 				)}
 			</div>

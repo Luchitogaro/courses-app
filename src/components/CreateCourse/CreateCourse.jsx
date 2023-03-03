@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
@@ -10,22 +10,25 @@ import PropTypes from 'prop-types';
 // import styles
 import './CreateCourse.scss';
 import { todayDate } from '../../helpers/formatCreationDate';
-import { Context } from '../../Store';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCourseAction } from '../../store/courses/actions';
+import { addAuthorAction } from '../../store/authors/actions';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
 const CreateCourse = () => {
 	const navigate = useNavigate();
 
-	const [state, dispatch] = useContext(Context);
+	const dispatch = useDispatch();
+	const { authors } = useSelector((state) => state);
 
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [authorName, setAuthorName] = useState('');
 	const [duration, setDuration] = useState(0);
 	const [currentAuthorList, setCurrentAuthorList] = useState([]);
-	const [generalAuthorList, setGeneralAuthorList] = useState(state.authors);
+	const [generalAuthorList, setGeneralAuthorList] = useState(authors);
 
 	const addAuthorEvent = (author) => {
 		setCurrentAuthorList([...currentAuthorList, author]);
@@ -82,7 +85,7 @@ const CreateCourse = () => {
 				duration: duration,
 				authors: currentAuthorList.map((author) => author.id),
 			};
-			dispatch({ type: 'ADD_COURSE', payload: newCourse });
+			dispatch(addCourseAction(newCourse));
 			navigate('/courses');
 		}
 	};
@@ -97,7 +100,7 @@ const CreateCourse = () => {
 			id: uuidv4(),
 			name: authorName,
 		};
-		dispatch({ type: 'ADD_AUTHOR', payload: newAuthor });
+		dispatch(addAuthorAction(newAuthor));
 		setAuthorName('');
 		setGeneralAuthorList([...generalAuthorList, newAuthor]);
 	};

@@ -5,33 +5,30 @@ import Logo from './components/Logo/Logo';
 
 // import styles
 import './Header.scss';
-import {
-	getToken,
-	getUserName,
-	isLogedIn,
-	removeLoginData,
-} from '../../helpers/localStorage';
+import { isLogedIn, removeLoginData } from '../../helpers/localStorage';
 import { useNavigate } from 'react-router';
+import { logoutUser } from '../../services';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteUserAction } from '../../store/user/actions';
 
 const Header = () => {
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
+	const { user } = useSelector((state) => state);
+
+	const getUserName = () => {
+		return user?.name;
+	};
+
 	const handleEvent = async () => {
 		if (isLogedIn) {
-			const response = await fetch('http://localhost:4000/logout', {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: 'Bearer ' + getToken(),
-				},
-			});
-
-			if (response.status !== 200) {
-				alert('Error during user logout.');
-				return;
-			} else {
-				removeLoginData();
-				navigate('/login', true);
-			}
+			logoutUser()
+				.then(() => {
+					removeLoginData();
+					dispatch(deleteUserAction());
+					navigate('/login', true);
+				})
+				.catch((e) => alert('Error during user logout: ' + e));
 		}
 	};
 

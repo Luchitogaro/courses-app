@@ -2,36 +2,40 @@
 import React, { useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
+import { loginUser } from '../../services';
 
-// import styles
 import './Login.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { setLoginData } from '../../helpers/localStorage';
 import { FORBIDDEN_SYMBOLS, VALID_EMAIL } from '../../helpers/validateStrings';
+import { useDispatch } from 'react-redux';
+import { saveUsersAction } from '../../store/user/actions';
 
 const Login = () => {
 	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const dispatch = useDispatch();
 
-	const registerUser = async (logUser) => {
-		const response = await fetch('http://localhost:4000/login', {
-			method: 'POST',
-			body: JSON.stringify(logUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-
-		const result = await response.json();
-
-		if (response.status !== 201) {
-			alert('Error during user login: ' + result.result);
-			return;
-		} else {
-			setLoginData(result.result.split(' ')[1], result.user.name);
-			navigate('../courses', { replace: true });
-		}
+	const loginUserFunc = async (logUser) => {
+		loginUser(logUser)
+			.then((response) => {
+				if (!response.successful) {
+					throw new Error(response.result);
+				}
+				const name = response.user.name;
+				const token = response.result.split(' ')[1];
+				setLoginData(token, name);
+				dispatch(
+					saveUsersAction({
+						name,
+						email: response.user.email,
+						token,
+					})
+				);
+				navigate('../courses', { replace: true });
+			})
+			.catch((e) => alert('Error during user login: ' + e));
 	};
 
 	const isValidForm = () => {
@@ -46,14 +50,14 @@ const Login = () => {
 		return true;
 	};
 
-	const handleRegisterEvent = (e) => {
+	const handleLoginEvent = (e) => {
 		e.preventDefault();
 		if (isValidForm()) {
 			const logUser = {
 				email,
 				password,
 			};
-			registerUser(logUser);
+			loginUserFunc(logUser);
 		}
 	};
 
@@ -72,7 +76,7 @@ const Login = () => {
 	};
 
 	return (
-		<form className='login' onSubmit={handleRegisterEvent}>
+		<form className='login' onSubmit={handleLoginEvent}>
 			<h1>Login</h1>
 			<div className='login-info'>
 				<Input

@@ -7,6 +7,7 @@ import Input from '../../common/Input/Input';
 import './Registration.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { FORBIDDEN_SYMBOLS, VALID_EMAIL } from '../../helpers/validateStrings';
+import { registerUser } from '../../services';
 
 const Registration = () => {
 	const navigate = useNavigate();
@@ -14,22 +15,15 @@ const Registration = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const registerUser = async (newUser) => {
-		const response = await fetch('http://localhost:4000/register', {
-			method: 'POST',
-			body: JSON.stringify(newUser),
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		});
-		const result = await response.json();
-
-		if (response.status !== 201) {
-			alert('Error during user registration: ' + result.errors[0]);
-			return;
-		} else {
-			navigate('../courses', { replace: true });
-		}
+	const registerUserFunc = async (newUser) => {
+		registerUser(newUser)
+			.then((response) => {
+				if (!response.successful) {
+					throw new Error(response.errors);
+				}
+				navigate('../courses', { replace: true });
+			})
+			.catch((e) => alert('Error during user registration: ' + e));
 	};
 
 	const isValidForm = () => {
@@ -57,7 +51,7 @@ const Registration = () => {
 				email,
 				password,
 			};
-			registerUser(newUser);
+			registerUserFunc(newUser);
 		}
 	};
 
