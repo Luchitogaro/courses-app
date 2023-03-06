@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { getAllCourses } from '../../store/courses/thunk';
 import { getAllAuthors } from '../../store/authors/thunk';
+import { getUserLoggedIn } from '../../store/user/thunk';
 
 function Layout({ children }) {
 	const location = useLocation();
@@ -29,6 +30,7 @@ function Layout({ children }) {
 		}
 		dispatch(getAllCourses());
 		dispatch(getAllAuthors());
+		dispatch(getUserLoggedIn());
 	}, []);
 
 	return (

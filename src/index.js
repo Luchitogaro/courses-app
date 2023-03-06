@@ -10,6 +10,7 @@ import CourseForm from './components/CourseForm/CourseForm';
 import Layout from './common/Layout/Layout';
 import { Provider } from 'react-redux';
 import store from './store';
+import PrivateRoute from './common/Layout/PrivateRoute';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -36,9 +37,22 @@ root.render(
 					<Route
 						path='add'
 						element={
-							<Layout>
-								<CourseForm />
-							</Layout>
+							<PrivateRoute>
+								<Layout>
+									<CourseForm />
+								</Layout>
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path='update/:courseId'
+						element={
+							<PrivateRoute>
+								<Layout>
+									<CourseForm />
+								</Layout>
+							</PrivateRoute>
 						}
 					/>
 				</Route>

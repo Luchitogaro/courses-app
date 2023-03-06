@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Button from '../../common/Button/Button';
 import Input from '../../common/Input/Input';
 import { getCourseDuration } from '../../helpers/getCourseDuration';
@@ -10,19 +10,44 @@ import PropTypes from 'prop-types';
 // import styles
 import './CourseForm.scss';
 import { todayDate } from '../../helpers/formatCreationDate';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCourseAction } from '../../store/courses/actions';
+import {
+	addCourseAction,
+	updateCoursesAction,
+} from '../../store/courses/actions';
 import { addAuthorAction } from '../../store/authors/actions';
+import { addAuthor, addCourse, updateCourse } from '../../services';
 
 const forbiddenSymbols = /[@#$%^&]/;
 
 const CourseForm = () => {
 	const navigate = useNavigate();
+	const { courseId } = useParams();
+	const isEditingCourse = courseId && courseId.length > 0;
 
 	const dispatch = useDispatch();
-	const { authors } = useSelector((state) => state);
+	const { courses, authors } = useSelector((state) => state);
 
+	useEffect(() => {
+		if (isEditingCourse) {
+			const course = courses.find((course) => course.id === courseId);
+			if (course) {
+				setId(course.id);
+				setTitle(course.title);
+				setDuration(course.duration);
+				setDescription(course.description);
+				setCreationDate(course.creationDate);
+				const authorsCourse = authors.filter((author) =>
+					course.authors.includes(author.id)
+				);
+				authorsCourse.forEach((author) => addAuthorEvent(author));
+			}
+		}
+	}, []);
+
+	const [id, setId] = useState('');
+	const [creationDate, setCreationDate] = useState('');
 	const [title, setTitle] = useState('');
 	const [description, setDescription] = useState('');
 	const [authorName, setAuthorName] = useState('');
@@ -78,15 +103,34 @@ const CourseForm = () => {
 		e.preventDefault();
 		if (isValidForm()) {
 			const newCourse = {
-				id: uuidv4(),
+				id: isEditingCourse ? id : uuidv4(),
 				title: title,
 				description: description,
-				creationDate: todayDate(),
+				creationDate: isEditingCourse ? creationDate : todayDate(),
 				duration: duration,
 				authors: currentAuthorList.map((author) => author.id),
 			};
-			dispatch(addCourseAction(newCourse));
-			navigate('/courses');
+			if (isEditingCourse) {
+				updateCourse(newCourse)
+					.then((response) => {
+						if (!response.successful) {
+							throw new Error(response.errors);
+						}
+						navigate('/courses');
+						dispatch(updateCoursesAction(newCourse));
+					})
+					.catch((e) => alert('Error during Course cration: ' + e));
+			} else {
+				addCourse(newCourse)
+					.then((response) => {
+						if (!response.successful) {
+							throw new Error(response.errors);
+						}
+						dispatch(addCourseAction({ ...newCourse, id: response.result.id }));
+						navigate('/courses');
+					})
+					.catch((e) => alert('Error during Course cration: ' + e));
+			}
 		}
 	};
 
@@ -96,13 +140,23 @@ const CourseForm = () => {
 			alert('Invalid Author name, almost 2 characteres are required');
 			return;
 		}
-		const newAuthor = {
-			id: uuidv4(),
+		addAuthor({
 			name: authorName,
-		};
-		dispatch(addAuthorAction(newAuthor));
-		setAuthorName('');
-		setGeneralAuthorList([...generalAuthorList, newAuthor]);
+		})
+			.then((response) => {
+				if (!response.successful) {
+					throw new Error(response.errors);
+				}
+
+				const newAuthor = {
+					name: authorName,
+					id: response.result.id,
+				};
+				dispatch(addAuthorAction(newAuthor));
+				setAuthorName('');
+				setGeneralAuthorList([...generalAuthorList, newAuthor]);
+			})
+			.catch((e) => alert('Error during Author cration: ' + e));
 	};
 
 	const handleTitleChange = (value) => {
@@ -151,7 +205,10 @@ const CourseForm = () => {
 						minLength='2'
 						required
 					/>
-					<Button buttonText='Create Course' onClick={handleCourseFormEvent} />
+					<Button
+						buttonText={isEditingCourse ? 'Update course' : 'Create Course'}
+						onClick={handleCourseFormEvent}
+					/>
 				</div>
 				<div className='course-info-desc'>
 					<Input

@@ -9,13 +9,15 @@ import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 
 const Courses = () => {
-	const { courses, authors } = useSelector((state) => state);
+	const { courses, authors, user } = useSelector((state) => state);
 
 	const navigate = useNavigate();
 
 	const CourseFormEventCourse = () => {
 		navigate('/courses/add');
 	};
+
+	const isAdminUser = user && user.role === 'admin';
 
 	return (
 		<>
@@ -35,6 +37,7 @@ const Courses = () => {
 							creationDate={course.creationDate}
 							authors={getAuthors(course.authors, authors)}
 							showMoreButton
+							isAdminUser={isAdminUser}
 						/>
 					);
 				})}

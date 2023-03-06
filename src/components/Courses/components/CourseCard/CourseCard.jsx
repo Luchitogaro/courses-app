@@ -13,6 +13,7 @@ import { FaEdit, FaTrash } from 'react-icons/fa';
 
 // import styles
 import './CourseCard.scss';
+import { deleteCourse } from '../../../../services';
 
 const getAuthorlist = (authorList) => authorList.join(', ');
 
@@ -24,6 +25,7 @@ const CourseCard = ({
 	duration,
 	creationDate,
 	showMoreButton,
+	isAdminUser,
 	backButton,
 }) => {
 	const navigate = useNavigate();
@@ -33,11 +35,14 @@ const CourseCard = ({
 		navigate('/courses/' + id);
 	};
 	const handleEventEdit = () => {
-		alert('Edit button clicked ' + id);
+		navigate('/courses/update/' + id);
 	};
 	const handleEventRemove = () => {
-		dispatch(deleteCourseAction(id));
-		navigate('/courses');
+		deleteCourse(id)
+			.then(() => {
+				dispatch(deleteCourseAction(id));
+			})
+			.catch((e) => alert('Error during Course deleting: ' + e));
 	};
 
 	return (
@@ -73,12 +78,16 @@ const CourseCard = ({
 				{showMoreButton && (
 					<div className='course-card-actions'>
 						<Button buttonText='Show course' onClick={handleEvent}></Button>
-						<Button onClick={handleEventEdit}>
-							<FaEdit />
-						</Button>
-						<Button onClick={handleEventRemove}>
-							<FaTrash />
-						</Button>
+						{isAdminUser && (
+							<>
+								<Button onClick={handleEventEdit}>
+									<FaEdit />
+								</Button>
+								<Button onClick={handleEventRemove}>
+									<FaTrash />
+								</Button>
+							</>
+						)}
 					</div>
 				)}
 			</div>
@@ -94,6 +103,7 @@ CourseCard.propTypes = {
 	duration: PropTypes.number,
 	creationDate: PropTypes.string,
 	showMoreButton: PropTypes.bool,
+	isAdminUser: PropTypes.bool,
 	backButton: PropTypes.bool,
 };
 
