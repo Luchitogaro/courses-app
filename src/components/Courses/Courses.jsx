@@ -9,19 +9,21 @@ import { useNavigate } from 'react-router';
 import { useSelector } from 'react-redux';
 
 const Courses = () => {
-	const { courses, authors } = useSelector((state) => state);
+	const { courses, authors, user } = useSelector((state) => state);
 
 	const navigate = useNavigate();
 
-	const createCourseEventCourse = () => {
+	const CourseFormEventCourse = () => {
 		navigate('/courses/add');
 	};
+
+	const isAdminUser = user && user.role === 'admin';
 
 	return (
 		<>
 			<div className='banner-bar'>
 				<SearchBar />
-				<Button buttonText='Create course' onClick={createCourseEventCourse} />
+				<Button buttonText='Create course' onClick={CourseFormEventCourse} />
 			</div>
 			<div className='courses'>
 				{courses.map((course, index) => {
@@ -35,6 +37,7 @@ const Courses = () => {
 							creationDate={course.creationDate}
 							authors={getAuthors(course.authors, authors)}
 							showMoreButton
+							isAdminUser={isAdminUser}
 						/>
 					);
 				})}
