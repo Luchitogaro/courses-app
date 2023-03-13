@@ -23,13 +23,14 @@ const Login = () => {
 				if (!response.successful) {
 					throw new Error(response.result);
 				}
-				const name = response.user.name;
+				const { name, email, role } = response.user;
 				const token = response.result.split(' ')[1];
 				setLoginData(token, name);
 				dispatch(
 					saveUsersAction({
 						name,
-						email: response.user.email,
+						email,
+						role,
 						token,
 					})
 				);
