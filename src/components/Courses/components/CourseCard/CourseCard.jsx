@@ -56,7 +56,9 @@ const CourseCard = ({
 					</div>
 				)}
 				<h1>{title}</h1>
-				<p className='course-description'>{description}</p>
+				<p className='course-description' data-testid='course-description'>
+					{description}
+				</p>
 			</div>
 			<div className='course-card-desc'>
 				<div className='course-card-id'>
@@ -65,15 +67,21 @@ const CourseCard = ({
 				</div>
 				<div className='course-card-authors'>
 					<span className='subTitle'>Authors: </span>
-					<span className='description'>{getAuthorlist(authors)}</span>
+					<span className='description' data-testid='course-authors'>
+						{getAuthorlist(authors)}
+					</span>
 				</div>
 				<div className='course-card-duration'>
 					<span className='subTitle'>Duration: </span>
-					<span className='description'>{getCourseDuration(duration)}</span>
+					<span className='description' data-testid='course-duration'>
+						{getCourseDuration(duration)}
+					</span>
 				</div>
 				<div className='course-card-date'>
 					<span className='subTitle'>Created: </span>
-					<span className='description'>{formatDate(creationDate)}</span>
+					<span className='description' data-testid='course-creation-date'>
+						{formatDate(creationDate)}
+					</span>
 				</div>
 				{showMoreButton && (
 					<div className='course-card-actions'>
